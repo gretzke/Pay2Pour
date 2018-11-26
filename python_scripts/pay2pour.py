@@ -63,6 +63,7 @@ class MainWindow(QMainWindow):
         global thread
         thread.exiting = True
         thread.wait()
+        GPIO.cleanup()
         event.accept()  # let the window close
 
     def pour(self):
