@@ -13,6 +13,12 @@ from PyQt5 import QtGui
 import qrcode
 from web3 import Web3
 
+# GPIO setup
+import RPi.GPIO as GPIO
+pin = 21
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin, GPIO.OUT)
+
 # Address of Ethereum node
 nodeAddr = ""
 # Address of Ethereum smart contract
@@ -65,9 +71,11 @@ class MainWindow(QMainWindow):
             self.window.pushButton.setText("Pouring ...")
             self.count -= 1
             print("Pouring...")
+            GPIO.output(pin, GPIO.HIGH)  # Turn pump on
             QTimer.singleShot(5000, self.finishPouring)
 
     def finishPouring(self):
+        GPIO.output(pin, GPIO.LOW)  # Turn pump off
         print("finished Pouring")
         self.window.pushButton.setText("Pour")
         self.window.pushButton.setEnabled(True)
